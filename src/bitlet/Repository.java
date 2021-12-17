@@ -31,7 +31,7 @@ public class Repository {
     /** The current working directory. */
     public static final File CWD = new File(System.getProperty("user.dir"));
     /** The .gitlet directory. */
-    public static final File GITLET_DIR = join(CWD, ".gitlet");
+    public static final File GITLET_DIR = join(CWD, ".bitlet");
 
     public static final File COMMIT_DIR = join(GITLET_DIR, "commits");
 
