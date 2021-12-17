@@ -1,7 +1,7 @@
 package bitlet;
 
 /** Driver class for Bitlet, a subset of the Git version-control system.
- *  @author TODO
+ *  @author Lorcan
  */
 public class Main {
 
@@ -14,6 +14,10 @@ public class Main {
             System.out.println(Utils.error("Please enter a valid command").getMessage());
             System.exit(0);
         }
+
+        // want to set up the objects which we will use for example example the staging
+
+
         String firstArg = args[0];
         switch(firstArg) {
             case "init":
@@ -21,22 +25,29 @@ public class Main {
                 validateNumArgs(firstArg, args, 1);
                 // TODO: handle the `init` command
                 // if the repo already exists just exit
-                if (Repository.GITLET_DIR.exists()) {
+                if (Repository.BITLET_DIR.exists()) {
                     System.out.println("A Bitlet version-control system already exists in the current directory.");
                     break;
                 }
                 Repository.setupPersistence();
-                // need to create a commit with the default values which are shown in the requirements
-
+                // TODO: need to create a commit with the default values which are shown in the requirements
 
                 break;
             // for the below cases, need to check whether there is a .bitlet directory
             // in the current directory
             case "add":
-                Repository.checkGitletDirExists();
+                // first check that a .bitlet directory exists
+                Repository.checkBitletDirExists();
+                // then check that the correct number of arguments has been supplied
                 validateNumArgs(firstArg, args, 2);
-                // need to first check that that file name actually exists in the current directory
-                Repository.checkFileExistsInDirectory(args[1]);
+                // next need to check that the file they want to add actually exists in the current directory
+                if (Repository.fileNotExistInCurrentDir(args[1])) {
+                    System.out.println("No file with this name could be found");
+                    break;
+                }
+                Repository.stageFile(args[1]);
+
+                // do I need to save something in the data directory at this point? Probably not
                 // add means we are adding a specific file to the stage
                 // before adding the file we want to check whether it exists in the current directory and
                 // whether it already exists in the stage, if it is then we overwrite that file
@@ -44,9 +55,15 @@ public class Main {
                 // TODO: handle the `add [filename]` command
                 break;
             case "merge":
-                Repository.checkGitletDirExists();
-            // TODO: FILL THE REST IN
+                Repository.checkBitletDirExists();
+                System.out.println("Please implement");
                 break;
+            case "show_stage":
+                Repository.checkBitletDirExists();
+                validateNumArgs(firstArg, args, 1);
+                System.out.println("Please implement");
+                break;
+            // TODO: FILL THE REST IN
             default:
                 Utils.error("Please enter a valid action");
                 System.exit(0);

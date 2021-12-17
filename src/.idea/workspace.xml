@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="add5d48d-32ba-4a41-9684-76259adab02b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gitlet/Blob.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/Blob.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gitlet/Commit.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/Commit.java" afterDir="false" />
@@ -14,9 +13,7 @@
       <change beforePath="$PROJECT_DIR$/gitlet/DumpObj.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/DumpObj.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gitlet/Dumpable.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/Dumpable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gitlet/GitletException.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/GitletException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gitlet/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gitlet/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gitlet/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/Repository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gitlet/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/bitlet/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/testing/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing/runner.py" afterDir="false" />
