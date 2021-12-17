@@ -50,6 +50,21 @@ public class Main {
                     System.out.println("No file with this name could be found");
                     break;
                 }
+
+                // at this point don't want to necessarily stage the file, because the file might exist in the
+                // staging area and if the file and contents are the same then we should remove it from the stage
+
+                // if the two files with the same name have the same contents then remove the file from the stage
+                // and probably want to inform the user??
+                if (Stage.getStageInstance().getStageTree().contains(args[1])) {
+                    if (Repository.checkTwoFilesAreTheSame(args[1])) {
+                        // TODO: remove the file from the stage and remove the file from the tree
+                    }
+                }
+                if (Repository.checkTwoFilesAreTheSame(args[1])) {
+
+                }
+                // here we know that the staged file (
                 Repository.stageFile(args[1]);
 
                 // do I need to save something in the data directory at this point? Probably not

@@ -11,23 +11,27 @@ import java.util.TreeSet;
  * And singleStageInstance should be set to null
  */
 
+// when staging a file need to know not only know whether the file exists but also that the content of the file is the same
+// which means we need to hash the file name and the contents of the file to know whether the two files are the same or not
+
 public class Stage {
 
     private static Stage singleStageInstance;
     private int numberOfFiles = 0;
-    private TreeSet<String> tree;
+    private TreeSet<String> stageTree;
 
 
     private Stage() {
-        tree = new TreeSet<String>();
+        stageTree = new TreeSet<String>();
         File[] directoryListing = Repository.STAGE.listFiles();
         if (directoryListing == null || directoryListing.length == 0) {
             System.out.println("No files in the stage which need to be completed");
         } else {
             for (File individualFile : directoryListing) {
                 numberOfFiles += 1;
-                String hashOfFile = Utils.sha1(individualFile.toString());
-                tree.add(hashOfFile);
+                // below we are hashing just the name of the file
+                //String hashOfFile = Utils.sha1(individualFile.getName());
+                stageTree.add(individualFile.getName());
             }
         }
     }
@@ -42,6 +46,14 @@ public class Stage {
             singleStageInstance = new Stage();
         }
         return singleStageInstance;
+    }
+
+    public TreeSet<String> getStageTree() {
+        return stageTree;
+    }
+
+    public boolean checkFileExistsInStage(String fileName) {
+        return stageTree.contains(fileName);
     }
 
 }

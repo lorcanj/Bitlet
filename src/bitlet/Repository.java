@@ -73,10 +73,7 @@ public class Repository {
         return false;
     }
 
-
-
-
-
+    // if we're staging a file then we also want to add it to the Stage Tree which we have initialised at the start
     /**
      *
      * @param fileName
@@ -88,11 +85,26 @@ public class Repository {
         try {
             fileToStage.createNewFile();
             writeContents(fileToStage, (Object) readContents(fileWithContentsToSave));
+            Stage.getStageInstance().getStageTree().add(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+    /**
+     *
+     * @param fileName
+     * @return
+     */
+    public static boolean checkTwoFilesAreTheSame(String fileName) {
+        // should only be checking files with the same filename because files with different filenames will be different
+        // here are checking the hashed contents of 2 files with the same filename before adding it to the stage
+        if(Utils.join(STAGE, fileName) == Utils.join(CWD, fileName)) {
+            return true;
+        }
+        return false;
+    }
 
     // need to serialize the commit and save it under the commits folder
     // to have the commit we need to get the hashcode of the commit to use as the name which then should
