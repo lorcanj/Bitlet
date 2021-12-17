@@ -1,5 +1,7 @@
 package bitlet;
 
+import static bitlet.Stage.getStageInstance;
+
 /** Driver class for Bitlet, a subset of the Git version-control system.
  *  @author Lorcan
  */
@@ -14,6 +16,9 @@ public class Main {
             System.out.println(Utils.error("Please enter a valid command").getMessage());
             System.exit(0);
         }
+        // the below deserialises the files in the stage if there are any still currently in the folder
+        // that have not yet been committed
+        Stage stage = getStageInstance();
 
         // want to set up the objects which we will use for example example the staging
 
