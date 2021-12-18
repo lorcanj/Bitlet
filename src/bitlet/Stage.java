@@ -22,13 +22,13 @@ public class Stage {
 
 
     private Stage() {
-        stageTree = new TreeSet<String>();
+        this.stageTree = new TreeSet<String>();
         File[] directoryListing = Repository.STAGE.listFiles();
         if (directoryListing == null || directoryListing.length == 0) {
             System.out.println("No files in the stage which need to be completed");
         } else {
             for (File individualFile : directoryListing) {
-                numberOfFiles += 1;
+                this.numberOfFiles += 1;
                 // below we are hashing just the name of the file
                 //String hashOfFile = Utils.sha1(individualFile.getName());
                 stageTree.add(individualFile.getName());

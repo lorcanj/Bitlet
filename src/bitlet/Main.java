@@ -56,15 +56,16 @@ public class Main {
 
                 // if the two files with the same name have the same contents then remove the file from the stage
                 // and probably want to inform the user??
+
+
+                // here only want to delete if the stage contains that file and the contents of the file are the same
+                // checks whether the file is in the tree in O(log(N)) because data is kept in a BST
                 if (Stage.getStageInstance().getStageTree().contains(args[1])) {
                     if (Repository.checkTwoFilesAreTheSame(args[1])) {
                         // TODO: remove the file from the stage and remove the file from the tree
                     }
                 }
-                if (Repository.checkTwoFilesAreTheSame(args[1])) {
-
-                }
-                // here we know that the staged file (
+                // here we know that the staged file
                 Repository.stageFile(args[1]);
 
                 // do I need to save something in the data directory at this point? Probably not
