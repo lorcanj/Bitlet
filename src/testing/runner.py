@@ -45,7 +45,7 @@ The instructions each have one of the following forms:
           seconds.
    + NAME F
           Copy the contents of src/F into a file named NAME.
-   - NAME
+   - NAME\
           Delete the file named NAME.
    > COMMAND OPERANDS
    LINE1

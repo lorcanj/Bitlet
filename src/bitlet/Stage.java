@@ -25,7 +25,8 @@ public class Stage {
         this.stageTree = new TreeSet<String>();
         File[] directoryListing = Repository.STAGE.listFiles();
         if (directoryListing == null || directoryListing.length == 0) {
-            System.out.println("No files in the stage which need to be completed");
+            // previously printed out a message here but failing a test as should have no output
+            //System.out.println("No files in the stage which need to be completed");
         } else {
             for (File individualFile : directoryListing) {
                 this.numberOfFiles += 1;

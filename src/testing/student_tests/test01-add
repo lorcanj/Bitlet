@@ -1,1 +1,7 @@
-# trying own integration test
+# Basic initialization
+> init
+<<<
++ wug.txt wug.txt
+> add wug.txt
+<<<
+E .bitlet/stage/wug.txt

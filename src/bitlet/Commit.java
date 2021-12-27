@@ -1,6 +1,8 @@
 package bitlet;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.TreeMap;
@@ -59,7 +61,8 @@ public class Commit implements Serializable {
     // want a treemap which given an input SHA1 hash of a filename, returns the SHA1 hash of the blob to return
     // with the returned has it should be possible to deserialise the file to a File object using the contents
 
-    // so when first
+    // each commit will contain a Treemap of file names and is mapped to the hash of the data
+    // at commit will
     private TreeMap<String, String> filesToBlobs;
 
 
@@ -70,20 +73,26 @@ public class Commit implements Serializable {
         this.branch = branch;
     }
 
-    public void generateSHA1Hash() {
-        this.UID = Utils.sha1(this);
-    }
+    //public void
 
-
+    // when commit, will take the files from the stage and hash the contents and use these to fill the TreeMap
+    // with references from the file name to the hash contents
+    // data will store a list of hashes which can then be retrieved
 
     /**
      * Create the first empty commit
      * @return
      */
-    public Commit createFirstCommit() {
-        //Commit firstCommit = new Commit("initial commit", Instant.EPOCH, "", "1", "main");
-        //return firstCommit;
-        return null;
+    public static void createFirstCommit() {
+        Commit firstCommit = new Commit("initial commit", Instant.EPOCH, "",  "main");
+        byte[] commitByteArray = Utils.serialize(firstCommit);
+        String commitHash = Utils.sha1(commitByteArray);
+        File commitFile = Utils.join(Repository.COMMIT_DIR, commitHash);
+        try {
+            commitFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /* TODO: fill in the rest of this class. */

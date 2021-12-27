@@ -2,6 +2,7 @@ package bitlet;
 
 import static bitlet.Stage.getStageInstance;
 
+
 /** Driver class for Bitlet, a subset of the Git version-control system.
  *  @author Lorcan
  */
@@ -36,7 +37,7 @@ public class Main {
                 }
                 Repository.setupPersistence();
                 // TODO: need to create a commit with the default values which are shown in the requirements
-
+                Commit.createFirstCommit();
                 break;
             // for the below cases, need to check whether there is a .bitlet directory
             // in the current directory
