@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import static bitlet.Stage.getStageInstance;
 
+//TODO: cannot test the hash of the first commit because it is dependent on the date and time
+// so will always change!
 
 /** Driver class for Bitlet, a subset of the Git version-control system.
  *  @author Lorcan
@@ -80,6 +82,15 @@ public class Main {
                 // whether it already exists in the stage, if it is then we overwrite that file
 
                 // TODO: handle the `add [filename]` command
+                break;
+            case "commit":
+                //TODO: handle the commit command to actually create a new commit and empty the stage
+                Repository.checkBitletDirExists();
+                validateNumArgs(firstArg, args, 2);
+                System.out.println("please implement");
+
+
+
                 break;
             case "merge":
                 Repository.checkBitletDirExists();

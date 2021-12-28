@@ -44,7 +44,9 @@ class Utils {
             return map;
         }
         File[] commitFiles = Repository.COMMIT_DIR.listFiles();
+        //System.out.println(commitFiles.length);
         for (int i = 0; i < commitFiles.length; i++) {
+            System.out.println(commitFiles[i].exists());
             Commit nextCommit = readObject(commitFiles[i], Commit.class);
             map.put(Utils.sha1(Utils.serialize(nextCommit)), nextCommit);
         }
