@@ -35,15 +35,14 @@ class Utils {
     static final int UID_LENGTH = 40;
 
 
-
-    // is not working because the first commit is not saving the contents of the commit to the commit itself
-    // so cannot reconstruct it
-
     // here at start up want to deserialise the commits in the commits folder
     // and then map the hash to the object itself
     static HashMap<String, Commit> createRunTimeCommitMap() {
 
         HashMap<String, Commit> map = new HashMap<String, Commit>();
+        if (!Repository.COMMIT_DIR.exists()) {
+            return map;
+        }
         File[] commitFiles = Repository.COMMIT_DIR.listFiles();
         for (int i = 0; i < commitFiles.length; i++) {
             Commit nextCommit = readObject(commitFiles[i], Commit.class);

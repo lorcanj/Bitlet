@@ -20,13 +20,12 @@ public class Main {
             System.exit(0);
         }
 
+        // the stage and runTimeCommitMap could just be fileds of the CommitGraph
+        // we create the CommitGraph at the start and hide all this code within that
+
         Stage stage = getStageInstance();
 
         HashMap<String, Commit> runTimeCommitMap = Utils.createRunTimeCommitMap();
-        System.out.println(runTimeCommitMap.size());
-        // want to set up the objects which we will use for example example the staging
-        System.out.println(runTimeCommitMap.get("a27d676756d1047a767b30728022e5347fe434ff").getDate());
-
 
         String firstArg = args[0];
         switch(firstArg) {

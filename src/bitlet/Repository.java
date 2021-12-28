@@ -39,7 +39,6 @@ public class Repository {
     public static final File DATA_DIR = join(BITLET_DIR, "data");
 
     public static final File STAGE = join(BITLET_DIR, "stage");
-    /* TODO: fill in the rest of this class. */
 
     /**
      * If the directories below have not been created, then create these at the start
@@ -110,7 +109,5 @@ public class Repository {
     // basically always be unique
     // when committing will need to access all of the data in the stage and save these to the given commit
     //
-
-
 
 }
