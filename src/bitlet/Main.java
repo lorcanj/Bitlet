@@ -1,5 +1,7 @@
 package bitlet;
 
+import java.util.HashMap;
+
 import static bitlet.Stage.getStageInstance;
 
 
@@ -17,11 +19,13 @@ public class Main {
             System.out.println(Utils.error("Please enter a valid command").getMessage());
             System.exit(0);
         }
-        // the below deserialises the files in the stage if there are any still currently in the folder
-        // that have not yet been committed
+
         Stage stage = getStageInstance();
 
+        HashMap<String, Commit> runTimeCommitMap = Utils.createRunTimeCommitMap();
+        System.out.println(runTimeCommitMap.size());
         // want to set up the objects which we will use for example example the staging
+        System.out.println(runTimeCommitMap.get("a27d676756d1047a767b30728022e5347fe434ff").getDate());
 
 
         String firstArg = args[0];
@@ -36,8 +40,10 @@ public class Main {
                     break;
                 }
                 Repository.setupPersistence();
-                // TODO: need to create a commit with the default values which are shown in the requirements
+                // below creates the first commit upon initialisation and saves the hash to the commits directory
+                // will not contain data as first commit is empty so just hash the commit object
                 Commit.createFirstCommit();
+                // TODO: once the commit has been created it will need to be added to the commit graph
                 break;
             // for the below cases, need to check whether there is a .bitlet directory
             // in the current directory
@@ -95,7 +101,6 @@ public class Main {
     /**
      * Checks the number of arguments versus the expected number,
      * throws a RuntimeException if they do not match.
-     *
      * @param cmd Name of command you are validating
      * @param args Argument array from command line
      * @param n Number of expected arguments

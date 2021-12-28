@@ -1,5 +1,7 @@
 package bitlet;
 
+import com.sun.security.jgss.GSSUtil;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -16,6 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -30,6 +33,24 @@ class Utils {
 
     /** The length of a complete SHA-1 UID as a hexadecimal numeral. */
     static final int UID_LENGTH = 40;
+
+
+
+    // is not working because the first commit is not saving the contents of the commit to the commit itself
+    // so cannot reconstruct it
+
+    // here at start up want to deserialise the commits in the commits folder
+    // and then map the hash to the object itself
+    static HashMap<String, Commit> createRunTimeCommitMap() {
+
+        HashMap<String, Commit> map = new HashMap<String, Commit>();
+        File[] commitFiles = Repository.COMMIT_DIR.listFiles();
+        for (int i = 0; i < commitFiles.length; i++) {
+            Commit nextCommit = readObject(commitFiles[i], Commit.class);
+            map.put(Utils.sha1(Utils.serialize(nextCommit)), nextCommit);
+        }
+        return map;
+    }
 
     /* SHA-1 HASH VALUES. */
 
