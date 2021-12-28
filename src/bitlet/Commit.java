@@ -74,6 +74,8 @@ public class Commit implements Serializable {
     // this will map the file name of the data file to the hash of the contents of the file
     // so when a person commits, then all of the files in the stage will be hashed and the file
 
+    // Each commit will have a treeMap linking the commit hash to the blob hash
+    // at point of commit, will need to hash all of the files in the stage
     private TreeMap<String, String> filesToData;
 
     // will need to update /student_tests/test02-init if change commit as it will change the hash
@@ -87,10 +89,10 @@ public class Commit implements Serializable {
 
 
     // TODO: want to update the files to data
-    public Commit(String message, Instant date, String author, String branch, String parent, TreeMap<String, String> filesToData) {
+    // also want to
+    public Commit(String message, Instant date, String branch, String parent, TreeMap<String, String> filesToData) {
         this.message = message;
         this.date = date;
-        this.author = author;
         this.branch = branch;
         this.parent = parent;
 
@@ -102,28 +104,25 @@ public class Commit implements Serializable {
         return date;
     }
 
-    //public void
-
-    // when commit, will take the files from the stage and hash the contents and use these to fill the TreeMap
-    // with references from the file name to the hash contents
-    // data will store a list of hashes which can then be retrieved
-
-
+    public String getParent() {
+        return parent;
+    }
 
     /**
-     * Create the first empty commit
+     * Create the first commit
      * @return
      */
     public static void createFirstCommit() {
         Commit firstCommit = new Commit("initial commit", Instant.EPOCH, "",  "main", "");
         byte[] commitByteArray = Utils.serialize(firstCommit);
-        //
         String commitHash = Utils.sha1(commitByteArray);
         File commitFile = Utils.join(Repository.COMMIT_DIR, commitHash);
+        File head = Utils.join(Repository.BRANCH_DIR, firstCommit.branch);
         Utils.writeContents(commitFile, commitByteArray);
+        Utils.writeContents(head, commitByteArray);
         try {
             commitFile.createNewFile();
-
+            head.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }

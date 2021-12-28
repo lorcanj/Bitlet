@@ -40,6 +40,11 @@ public class Repository {
 
     public static final File STAGE = join(BITLET_DIR, "stage");
 
+    // the branch directory stores the heads of the respective branches
+    // i.e. the name of the file will be the branch name and it stores the hash of the commit
+    // which is at the head of that branch
+    public static final File BRANCH_DIR = join(BITLET_DIR, "branches");
+
     /**
      * If the directories below have not been created, then create these at the start
      * of the programme
@@ -50,6 +55,7 @@ public class Repository {
         COMMIT_DIR.mkdir();
         DATA_DIR.mkdir();
         STAGE.mkdir();
+        BRANCH_DIR.mkdir();
     }
 
     public static void checkBitletDirExists() {
