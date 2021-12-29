@@ -1,6 +1,8 @@
 package bitlet;
 
 
+import jdk.jshell.execution.Util;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -81,32 +83,31 @@ public class Commit implements Serializable {
     // then check if that file name is in the treemap and if so is the hash the same
     private TreeMap<String, String> filesToData;
 
-    private TreeMap<String, String> mapFilesToData(String branch) {
+    private void mapFilesToData(String branch) {
         // this should give us the file to the head of the branch 'branch'
         File previousCommit = Utils.join(Repository.BRANCH_DIR, branch);
         Commit c = Utils.readObject(previousCommit, Commit.class);
         filesToData = (TreeMap<String,String>) c.filesToData.clone();
         File[] listOfFiles = previousCommit.listFiles();
         if (listOfFiles == null) {
-            return filesToData;
+            return;
         }
-
-        // below we want to check the treemap of the last commit and copy it
-        // then check each file in the stage, if the name is the same and the contents are the same
-        // then is fine, and probably delete that file from the stage
-
-        // else if it is different the replace the contents with the new hash of the contents
         for (File file : listOfFiles) {
-            if (filesToData.containsKey(file.getName())) {
-                if (filesToData.get(file.getName()).equals(Utils.sha1(Utils.readContentsAsString(file)))){
-                    continue;
+            // below check that the file name is the same and the hashed contents are the same
+            // if so then just remove this file from the stage as no different from previous commit
+            if (filesToData.containsKey(file.getName()) &&
+                    filesToData.get(file.getName()).equals(Utils.sha1(Utils.readContentsAsString(file)))){
+                    Utils.restrictedDelete(file);
                 }
-                else {
-                    continue;
-                }
+            // if the map contains the key, update the hash with the new contents from the stage
+            else if (filesToData.containsKey(file.getName())) {
+                filesToData.replace(file.getName(), Utils.sha1(Utils.readContentsAsString(file)));
+            }
+            // if file not in the map, then add it to the map
+            else {
+                filesToData.put(file.getName(), Utils.sha1(Utils.readContentsAsString(file)));
             }
         }
-
     }
 
     // will need to update /student_tests/test02-init if change commit as it will change the hash

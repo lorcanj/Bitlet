@@ -90,10 +90,10 @@ class Utils {
     /** Deletes FILE if it exists and is not a directory.  Returns true
      *  if FILE was deleted, and false otherwise.  Refuses to delete FILE
      *  and throws IllegalArgumentException unless the directory designated by
-     *  FILE also contains a directory named .gitlet. */
+     *  FILE also contains a directory named .bitlet. */
     static boolean restrictedDelete(File file) {
-        if (!(new File(file.getParentFile(), ".gitlet")).isDirectory()) {
-            throw new IllegalArgumentException("not .gitlet working directory");
+        if (!(new File(file.getParentFile(), ".bitlet")).isDirectory()) {
+            throw new IllegalArgumentException("not .bitlet working directory");
         }
         if (!file.isDirectory()) {
             return file.delete();
