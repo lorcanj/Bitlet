@@ -110,6 +110,26 @@ public class Repository {
         return false;
     }
 
+    public static void moveFilesToData() {
+        File[] stagedFiles = Repository.STAGE.listFiles();
+        if (stagedFiles == null || stagedFiles.length == 0) {
+            return;
+        }
+        for (File file : stagedFiles) {
+            String fileHashedName = file.getName();
+            String fileContents = Utils.readContentsAsString(file);
+            fileHashedName += fileContents;
+            fileHashedName = Utils.sha1(fileHashedName);
+            File fileToSave = Utils.join(Repository.DATA_DIR,fileHashedName);
+            try {
+                fileToSave.createNewFile();
+                Utils.writeContents(fileToSave, Utils.sha1(fileContents));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // need to serialize the commit and save it under the commits folder
     // to have the commit we need to get the hashcode of the commit to use as the name which then should
     // basically always be unique

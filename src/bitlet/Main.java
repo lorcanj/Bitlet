@@ -1,8 +1,11 @@
 package bitlet;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import static bitlet.Stage.getStageInstance;
+import java.time.Instant;
 
 //TODO: cannot test the hash of the first commit because it is dependent on the date and time
 // so will always change!
@@ -28,8 +31,8 @@ public class Main {
         Stage stage = getStageInstance();
 
         HashMap<String, Commit> runTimeCommitMap = Utils.createRunTimeCommitMap();
-
         String firstArg = args[0];
+
         switch(firstArg) {
             case "init":
                 // asserting that init should not have any other arguments with it
@@ -88,10 +91,27 @@ public class Main {
                 Repository.checkBitletDirExists();
                 validateNumArgs(firstArg, args, 2);
 
-                System.out.println("please implement");
+                // the below creates a new commit object
+                // the commit also contains a TreeMap that maps the files to the data hashes in the data directory
+                Commit newCommit = new Commit(args[1], Instant.EPOCH, "main");
+                Repository.moveFilesToData();
 
+                // want to do this in the commit class
+                byte[] commitByteArray = Utils.serialize(newCommit);
+                String commitHash = Utils.sha1(commitByteArray);
+                File commitFile = Utils.join(Repository.COMMIT_DIR, commitHash);
+                File head = Utils.join(Repository.BRANCH_DIR, newCommit.getBranch());
+                Utils.writeContents(commitFile, commitByteArray);
+                Utils.writeContents(head, commitHash);
 
+                try {
+                    commitFile.createNewFile();
+                    head.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                // next want to remove the files in the stage
                 break;
             case "merge":
                 Repository.checkBitletDirExists();

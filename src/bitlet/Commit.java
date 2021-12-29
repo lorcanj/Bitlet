@@ -65,9 +65,6 @@ public class Commit implements Serializable {
     // needs to be moved
     private String parent;
 
-
-    private ArrayList<String> hashedDataReferences;
-
     // want a treemap which given an input SHA1 hash of a filename, returns the SHA1 hash of the blob to return
     // with the returned has it should be possible to deserialise the file to a File object using the contents
 
@@ -83,14 +80,21 @@ public class Commit implements Serializable {
     // then check if that file name is in the treemap and if so is the hash the same
     private TreeMap<String, String> filesToData;
 
-    private void mapFilesToData(String branch) {
+    @SuppressWarnings(value = "unchecked")
+    public TreeMap<String, String> mapFilesToData(String branch) {
         // this should give us the file to the head of the branch 'branch'
         File previousCommit = Utils.join(Repository.BRANCH_DIR, branch);
-        Commit c = Utils.readObject(previousCommit, Commit.class);
-        filesToData = (TreeMap<String,String>) c.filesToData.clone();
+        Commit c = Utils.readObject(Utils.join(Repository.COMMIT_DIR, Utils.readContentsAsString(previousCommit)), Commit.class);
+
+        if (c.filesToData == null) {
+            filesToData = new TreeMap<String, String>();
+        } else {
+            filesToData = (TreeMap<String, String>) c.filesToData.clone();
+        }
+
         File[] listOfFiles = previousCommit.listFiles();
         if (listOfFiles == null) {
-            return;
+            return filesToData;
         }
         for (File file : listOfFiles) {
             // below check that the file name is the same and the hashed contents are the same
@@ -108,6 +112,7 @@ public class Commit implements Serializable {
                 filesToData.put(file.getName(), Utils.sha1(Utils.readContentsAsString(file)));
             }
         }
+        return filesToData;
     }
 
     // will need to update /student_tests/test02-init if change commit as it will change the hash
@@ -130,17 +135,17 @@ public class Commit implements Serializable {
 
 
     // TODO: want to update the files to data
-    // also want to
-    public Commit(String message, Instant date, String branch, String parent, TreeMap<String, String> filesToData) {
+    // also want to update the Commit so it saves the file, or should this be done in Repo
+    // and then called in the Commit class
+    public Commit(String message, Instant date, String branch) {
         this.message = message;
         this.date = date;
         this.branch = branch;
         // we can get the parent commit by finding the head of the parent branch
         File file = Utils.join(Repository.BRANCH_DIR, branch);
         this.parent = Utils.readContentsAsString(file);
-
         // below we want to create the TreeMap which links the file names to the blobs in the data folder
-        this.filesToData = filesToData;
+        this.filesToData = mapFilesToData(this.branch);
     }
 
     public Instant getDate() {
@@ -149,6 +154,10 @@ public class Commit implements Serializable {
 
     public String getParent() {
         return parent;
+    }
+
+    public String getBranch() {
+        return branch;
     }
 
     /**
