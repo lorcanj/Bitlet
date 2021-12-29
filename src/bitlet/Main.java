@@ -87,6 +87,7 @@ public class Main {
                 //TODO: handle the commit command to actually create a new commit and empty the stage
                 Repository.checkBitletDirExists();
                 validateNumArgs(firstArg, args, 2);
+
                 System.out.println("please implement");
 
 

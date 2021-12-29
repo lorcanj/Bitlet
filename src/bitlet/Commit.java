@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.ArrayList;
 
@@ -73,9 +74,40 @@ public class Commit implements Serializable {
     // this will map the file name of the data file to the hash of the contents of the file
     // so when a person commits, then all of the files in the stage will be hashed and the file
 
-    // Each commit will have a treeMap linking the commit hash to the blob hash
-    // at point of commit, will need to hash all of the files in the stage
+    // Each commit will have a treeMap linking the file name to the blob hash (which is the hash of the name of the file
+    // and the contents of the file
+    // at point of commit, need to first get the filesToData of the previous commit, which will be the head
+    // of the current branch
+    // then check if that file name is in the treemap and if so is the hash the same
     private TreeMap<String, String> filesToData;
+
+    private TreeMap<String, String> mapFilesToData(String branch) {
+        // this should give us the file to the head of the branch 'branch'
+        File previousCommit = Utils.join(Repository.BRANCH_DIR, branch);
+        Commit c = Utils.readObject(previousCommit, Commit.class);
+        filesToData = (TreeMap<String,String>) c.filesToData.clone();
+        File[] listOfFiles = previousCommit.listFiles();
+        if (listOfFiles == null) {
+            return filesToData;
+        }
+
+        // below we want to check the treemap of the last commit and copy it
+        // then check each file in the stage, if the name is the same and the contents are the same
+        // then is fine, and probably delete that file from the stage
+
+        // else if it is different the replace the contents with the new hash of the contents
+        for (File file : listOfFiles) {
+            if (filesToData.containsKey(file.getName())) {
+                if (filesToData.get(file.getName()).equals(Utils.sha1(Utils.readContentsAsString(file)))){
+                    continue;
+                }
+                else {
+                    continue;
+                }
+            }
+        }
+
+    }
 
     // will need to update /student_tests/test02-init if change commit as it will change the hash
     public Commit(String message, Instant date, String branch, String parent) {
@@ -84,6 +116,16 @@ public class Commit implements Serializable {
         this.branch = branch;
         this.parent = parent;
     }
+
+    // first commit will be empty, all the other commits should have had files that have been added to the stage
+    // the commit needs to save
+
+    // but the commit should also have the pointers of the previous commit
+    // for example if add a file, then commit shouldn't only have that file, but have all the files of the previous
+    // commit plus the files in the stage
+
+    // commits
+
 
 
     // TODO: want to update the files to data
@@ -133,6 +175,9 @@ public class Commit implements Serializable {
     public static byte[] byteArrayOfCommit() {
         return null;
     }
+
+
+
 
 
     // should do a lot of stuff in the CommitGraph
