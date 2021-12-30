@@ -87,13 +87,12 @@ class Utils {
     }
 
     /* FILE DELETION */
-
     /** Deletes FILE if it exists and is not a directory.  Returns true
      *  if FILE was deleted, and false otherwise.  Refuses to delete FILE
      *  and throws IllegalArgumentException unless the directory designated by
      *  FILE also contains a directory named .bitlet. */
     static boolean restrictedDelete(File file) {
-        if (!(new File(file.getParentFile(), ".bitlet")).isDirectory()) {
+        if (!(new File(file.getParentFile().getParentFile(), ".bitlet")).isDirectory()) {
             throw new IllegalArgumentException("not .bitlet working directory");
         }
         if (!file.isDirectory()) {
@@ -101,6 +100,41 @@ class Utils {
         } else {
             return false;
         }
+    }
+
+    static boolean restrictedDeleteCheckWholePath(File file) throws IOException {
+        if (!isSubDirectory(Repository.BITLET_DIR, file)) {
+            throw new IllegalArgumentException("Not a .bitlet working directory");
+        }
+        if (!file.isDirectory()) {
+            return file.delete();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks, whether the child directory is a subdirectory of the base
+     * directory.
+     *
+     * @param base the base directory.
+     * @param child the suspected child directory.
+     * @return true, if the child is a subdirectory of the base directory.
+     * @throws IOException if an IOError occured during the test.
+     */
+    private static boolean isSubDirectory(File base, File child)
+            throws IOException {
+        base = base.getCanonicalFile();
+        child = child.getCanonicalFile();
+
+        File parentFile = child;
+        while (parentFile != null) {
+            if (base.equals(parentFile)) {
+                return true;
+            }
+            parentFile = parentFile.getParentFile();
+        }
+        return false;
     }
 
     /** Deletes the file named FILE if it exists and is not a directory.

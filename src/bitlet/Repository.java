@@ -96,15 +96,16 @@ public class Repository {
         }
     }
 
+
+    // TODO: double check and delete this as might not be needed
     /**
-     *
+     * Checks whether the contents of the two files with the same filename but in different directories
+     * contain the same contents
      * @param fileName
-     * @return
+     * @return true if the contents of the two files are the same
      */
     public static boolean checkTwoFilesAreTheSame(String fileName) {
-        // should only be checking files with the same filename because files with different filenames will be different
-        // here are checking the hashed contents of 2 files with the same filename before adding it to the stage
-        if(Utils.join(STAGE, fileName) == Utils.join(CWD, fileName)) {
+        if (Utils.readContentsAsString(Utils.join(STAGE, fileName)).equals(Utils.readContentsAsString(Utils.join(CWD, fileName))))    {
             return true;
         }
         return false;

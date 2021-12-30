@@ -16,11 +16,11 @@ public class CommitGraph {
     private String currentBranch;
     private String head;
     private HashMap<String, Commit> runTimeCommitMap;
+    private Stage stage;
 
     // so how do we construct the
     public CommitGraph() {
         File head = Utils.join(Repository.BRANCH_DIR,"HEAD");
-
         this.runTimeCommitMap = Utils.createRunTimeCommitMap();
     }
 
