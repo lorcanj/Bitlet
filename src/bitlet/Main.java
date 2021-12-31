@@ -15,6 +15,9 @@ public class Main {
     /** Usage: java bitlet.Main ARGS, where ARGS contains
      *  <COMMAND> <OPERAND1> <OPERAND2> ... 
      */
+
+    // will probably want to keep a track of the current branch
+    // maybe could save this in a config file?
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
             System.out.println(Utils.error("Please enter a valid command").getMessage());
@@ -40,7 +43,6 @@ public class Main {
                 // TODO: once the commit has been created it will need to be added to the commit graph
                 break;
             case "add":
-
                 Repository.checkBitletDirExists();
                 validateNumArgs(firstArg, args, 2);
                 if (Repository.fileNotExistInCurrentDir(args[1])) {
@@ -50,16 +52,14 @@ public class Main {
                 File fileToStage = Utils.join(Repository.CWD, args[1]);
                 // want to get the latest commit, first get the file that is saved
                 File latestCommit = Utils.join(Repository.BRANCH_DIR, "main");
-                System.out.println(Utils.readContentsAsString(latestCommit));
                 // Then use the contents of the file to find the commit hash in the branch directory
                 Commit c = Utils.readObject(Utils.join(Repository.COMMIT_DIR, Utils.readContentsAsString(latestCommit)),Commit.class);
-                System.out.println(c.getMessage());
-                //System.out.println(c.getFilesToData().size());
-                //TODO: for some reason the filesToData is empty when the commit is deserialised
+
                 if (c.getFilesToData() != null && c.getFilesToData().size() > 0) {
-                    // first check if the previous commit contained the file that we are adding
+                    // first check if the previous commit contained the file name that we are adding
                     if (c.getFilesToData().containsKey(args[1])) {
-                        System.out.println(c.getFilesToData().get(args[1]));
+                        // then check if the file contents to be added have changed from the most recent commit
+                        // if haven't then won't add it to the stage
                         if (c.getFilesToData().get(args[1]).equals(Utils.sha1(args[1] + Utils.readContentsAsString(fileToStage)))) {
                             System.out.println("The file you want to commit is the same as the latest commit and cannot be added");
                             break;

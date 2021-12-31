@@ -93,7 +93,7 @@ public class Commit implements Serializable {
             }
             // if file not in the map, then add it to the map
             else {
-                filesToData.put(file.getName(), file.getName() + Utils.sha1(Utils.readContentsAsString(file)));
+                filesToData.put(file.getName(), Utils.sha1(file.getName() + Utils.readContentsAsString(file)));
             }
         }
         return filesToData;
